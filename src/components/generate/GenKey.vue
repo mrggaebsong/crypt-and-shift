@@ -3,7 +3,17 @@
 	<div class="row">
 <div class="col-sm-1">
 </div>
-<div class="col-sm-11">
+<div class="col-sm-2">
+	<h5>Select cipher</h5>
+	</div>
+<div class="col-sm-1">
+</div>
+<div class="col-sm-2">
+	<h5>Select format</h5>
+	</div>
+<div class="col-sm-1">
+</div>
+<div class="col-sm-2">
 	<h5>Select key size</h5>
 	</div>
 	</div>
@@ -11,25 +21,51 @@
 <div class="row">
 <div class="col-sm-1">
 </div>
-<div class="col-sm-3">
+<div class="col-sm-2">
 	<form>
 	<br>
-  <select name="keysize" class="custom-select">
-    <option selected>Select key size</option>
-    <option value="512">512-bit</option>
-    <option value="1024">1024-bit</option>
-    <option value="2048">2048-bit</option>
+  <select name="cipher" class="custom-select">
+    <option selected>Select cipher</option>
+    <option value="aes">AES</option>
+    <option value="des">DES</option>
   </select>
 	</form>
 	</div>
 
-<div class="col-sm-8">
+<div class="col-sm-1">
+</div>
+<div class="col-sm-2">
+	<form>
+	<br>
+  <select name="format" class="custom-select">
+    <option selected>Select format</option>
+    <option value="hex">hex</option>
+    <option value="base64">base64</option>
+  </select>
+	</form>
+	</div>
+
+<div class="col-sm-1">
+</div>
+<div class="col-sm-2">
+	<form>
+	<br>
+  <select name="keysize" class="custom-select">
+    <option selected>Select key size</option>
+    <option value="128">512-bit</option>
+    <option value="196">1024-bit</option>
+    <option value="256">2048-bit</option>
+  </select>
+	</form>
+	</div>
+
+<div class="col-sm-3">
     <button class="btn btn-success">
         <a class="nav-link">Generate key</a>
     </button>
     </div>
 </div>
-<br>
+
 
     <div class="row">
     <div class="col">
