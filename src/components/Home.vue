@@ -29,6 +29,9 @@
     </div>
 </template>
 
+<script>
+</script>
+
 <style>
     .col {
         background-color: #85b3cc;
