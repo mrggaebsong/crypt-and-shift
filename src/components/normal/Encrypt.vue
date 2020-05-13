@@ -1,15 +1,17 @@
 <template>
     <div class="row">
         <div class="col"  align="left">
-            <h4>Decryption</h4>
+            <h4>Encryption</h4>
             <div class="btn-group">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Choose
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{encryptTypeButton}}
                 </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item active" href="#">AES</a>
-                    <a class="dropdown-item" href="#">DES</a>
-                </div>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" v-for="type in encryptType" v-bind:key="type" v-on:click="selectEncryptType(type)" @click.prevent="activeNews(1)">
+                        <a href="#">{{type}}</a>
+                    </li>
+                </ul>
             </div>
             <form>
                 <div class="form-group">
@@ -17,12 +19,13 @@
                     <div class="form-group">
                         <div class="btn-group">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Choose
+                                                {{inputTypeButton}}
                             </button>
-                            <div class="dropdown-menu">
-                                    <a class="dropdown-item active" href="#">AES</a>
-                                    <a class="dropdown-item" href="#">DES</a>
-                            </div>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" v-for="input in inputType" v-bind:key="input" v-on:click="selectInputType(input)" @click.prevent="activeNews(1)">
+                                    <a href="#">{{input}}</a>
+                                </li>  
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -33,12 +36,13 @@
                         <div class="form-group">
                             <div class="btn-group">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Choose
+                                                {{encryptModeButton}}
                                 </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item active" href="#">AES</a>
-                                    <a class="dropdown-item" href="#">DES</a>
-                                </div>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item" v-for="mode in encryptMode" v-bind:key="mode" v-on:click="selectEncryptMode(mode)" @click.prevent="activeNews(1)">
+                                        <a href="#">{{mode}}</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                 </div>
@@ -49,12 +53,13 @@
                         <div class="form-group">
                             <div class="btn-group">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Choose
+                                                {{keySizeButton}}
                                 </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item active" href="#">AES</a>
-                                    <a class="dropdown-item" href="#">DES</a>
-                                </div>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item" v-for="size in keySize" v-bind:key="size" v-on:click="selectKeySize(size)" @click.prevent="activeNews(1)">
+                                        <a href="#">{{size}}</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                 </div>
@@ -63,7 +68,7 @@
                 <div class="form-group">
                     <h6>Enter Secret key:</h6>
                         <div class="form-group">
-                                <textarea class="form-control" rows="1" id="comment"></textarea>
+                                <textarea class="form-control" rows="1" id="comment" v-model="secretKey"></textarea>
                         </div>
                 </div>
             </form>
@@ -73,33 +78,77 @@
                         <div class="form-group">
                             <div class="btn-group">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Choose
+                                                {{outputButton}}
                                 </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item active" href="#">HEX</a>
-                                    <a class="dropdown-item" href="#">DEC</a>
-                                    <a class="dropdown-item" href="#">BIN</a>
-                                </div>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item" v-for="format in outputFormat" v-bind:key="format" v-on:click="selectOutputFormat(format)" @click.prevent="activeNews(1)">
+                                        <a href="#">{{format}}</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                 </div>
             </form>
+            <button class="btn btn-warning">
+                <a class="nav-link">Encryption</a>
+            </button>
         </div>
     </div>
 </template>
 
-<style>
+<script>
+    export default {
+        data: function() {
+            return {
+                encryptTypeButton: "Choose",
+                inputTypeButton: "Choose",
+                encryptModeButton: "Choose",
+                keySizeButton: "Choose",
+                outputButton: "Choose",
+                encryptType: ["AES", "DES"],
+                inputType: ["Plain Text", "File"],
+                encryptMode: ["CBC", "ECB"],
+                keySize: [128, 192, 256],
+                outputFormat: ["BIN", "HEX", "DEC"]
+            };
+        },
+        methods: {
+            selectEncryptType: function(type) {
+                this.encryptTypeButton = type;
+            },
+            selectInputType: function(input) {
+                this.inputTypeButton = input
+            },
+            selectEncryptMode: function(mode) {
+                this.encryptModeButton = mode
+            },
+            selectKeySize: function(size) {
+                this.keySizeButton = size
+            },
+            selectOutputFormat: function(format) {
+                this.outputButton = format
+            } 
+        }
+    }
+</script>
+
+<style scoped>
+    .row {
+        width: 160%;
+        margin-left: 20px;
+        margin-right: -30px;
+    }
+
     .col {
-        background-color: #ffff;
+        background-color: #85b3cc;
         border: 1px solid gray;
         margin: 40px;
-        height: 600px;
-        padding: 30px;
+        height: 800px;
+        padding: 50px;
     }
 
     .container {
         text-align: left;
-        
     }
 
     button {
@@ -112,10 +161,14 @@
     }
 
     a {
-        color: white;
+        color: black;
     }
 
     a:hover {
-        color: white;
+        text-decoration: none;
+    }
+
+    li:hover {
+        background-color: #0275d8;
     }
 </style>

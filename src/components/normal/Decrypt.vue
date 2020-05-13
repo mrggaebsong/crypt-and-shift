@@ -1,99 +1,150 @@
 <template>
-        <div class="row">
-            <div class="col"  align="left">
-                        <h4>Encryption</h4>
+    <div class="row">
+        <div class="col"  align="left">
+            <h4>Decryption</h4>
+            <div class="btn-group">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{encryptTypeButton}}
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" v-for="type in encryptType" v-bind:key="type" v-on:click="selectEncryptType(type)" @click.prevent="activeNews(1)">
+                        <a href="#">{{type}}</a>
+                    </li>
+                </ul>
+            </div>
+            <form>
+                <div class="form-group">
+                    <h6>Select Input:</h6>
+                    <div class="form-group">
                         <div class="btn-group">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Choose
+                                                {{inputTypeButton}}
                             </button>
-                            <div class="dropdown-menu">
-                                    <a class="dropdown-item active" href="#">AES</a>
-                                    <a class="dropdown-item" href="#">DES</a>
-                            </div>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" v-for="input in inputType" v-bind:key="input" v-on:click="selectInputType(input)" @click.prevent="activeNews(1)">
+                                    <a href="#">{{input}}</a>
+                                </li>  
+                            </ul>
                         </div>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Select Input:</h6>
-                                        <div class="btn-group form-group">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Choose
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item active" href="#">file</a>
-                                                        <a class="dropdown-item" href="#">text</a>
-                                                    </div>
-                                        </div>
-                                </div>
-                            </form>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Select Mode:</h6>
-                                        <div class="form-group">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Choose
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item active" href="#">CBC</a>
-                                                        <a class="dropdown-item" href="#">DES</a>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                </div>
-                            </form>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Key Size:</h6>
-                                        <div class="form-group">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Choose
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item active" href="#">1024</a>
-                                                        <a class="dropdown-item" href="#">DES</a>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                </div>
-                            </form>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Enter Secret key:</h6>
-                                        <div class="form-group">
-                                                <textarea class="form-control" rows="1" id="comment"></textarea>
-                                        </div>
-                                </div>
-                            </form>
-                            <form>
-                                <div class="form-group">
-                                    <h6>Output format :</h6>
-                                        <div class="form-group">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Choose
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item active" href="#">HEX</a>
-                                                        <a class="dropdown-item" href="#">DEC</a>
-                                                        <a class="dropdown-item" href="#">BIN</a>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                </div>
-                            </form>
-
-                        </div>
+                    </div>
                 </div>
+            </form>
+            <form>
+                <div class="form-group">
+                    <h6>Select Mode:</h6>
+                    <div class="form-group">
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{encryptModeButton}}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" v-for="mode in encryptMode" v-bind:key="mode" v-on:click="selectEncryptMode(mode)" @click.prevent="activeNews(1)">
+                                    <a href="#">{{mode}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form>
+                <div class="form-group">
+                    <h6>Key Size:</h6>
+                    <div class="form-group">
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{keySizeButton}}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" v-for="size in keySize" v-bind:key="size" v-on:click="selectKeySize(size)" @click.prevent="activeNews(1)">
+                                    <a href="#">{{size}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form>
+                <div class="form-group">
+                    <h6>Enter Secret key:</h6>
+                    <div class="form-group">
+                            <textarea class="form-control" rows="1" id="comment" v-model="secretKey"></textarea>
+                    </div>
+                </div>
+            </form>
+            <form>
+                <div class="form-group">
+                    <h6>Output format :</h6>
+                    <div class="form-group">
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{outputButton}}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" v-for="format in outputFormat" v-bind:key="format" v-on:click="selectOutputFormat(format)" @click.prevent="activeNews(1)">
+                                    <a href="#">{{format}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button class="btn btn-warning">
+                <a class="nav-link">Decryption</a>
+            </button>
+        </div>
+    </div>
 </template>
 
-<style>
+<script>
+    export default {
+        data: function() {
+            return {
+                encryptTypeButton: "Choose",
+                inputTypeButton: "Choose",
+                encryptModeButton: "Choose",
+                keySizeButton: "Choose",
+                outputButton: "Choose",
+                encryptType: ["AES", "DES"],
+                inputType: ["Plain Text", "File"],
+                encryptMode: ["CBC", "ECB"],
+                keySize: [128, 192, 256],
+                outputFormat: ["BIN", "HEX", "DEC"]
+            };
+        },
+        methods: {
+            selectEncryptType: function(type) {
+                this.encryptTypeButton = type;
+            },
+            selectInputType: function(input) {
+                this.inputTypeButton = input
+            },
+            selectEncryptMode: function(mode) {
+                this.encryptModeButton = mode
+            },
+            selectKeySize: function(size) {
+                this.keySizeButton = size
+            },
+            selectOutputFormat: function(format) {
+                this.outputButton = format
+            } 
+        }
+    }
+</script>
+
+<style scoped>
+    .row {
+        width: 150%;
+        margin-left: 200px;
+        margin-right: -175px;
+    }
+
     .col {
-        background-color: #ffff;
+        background-color: #85b3cc;
         border: 1px solid gray;
         margin: 40px;
-        height: 600px;
-        padding: 30px;
+        height: 800px;
+        padding: 50px;
     }
 
     .container {
@@ -111,10 +162,14 @@
     }
 
     a {
-        color: white;
+        color: black;
     }
 
     a:hover {
-        color: white;
+        text-decoration: none;
+    }
+
+    li:hover {
+        background-color: #0275d8;
     }
 </style>

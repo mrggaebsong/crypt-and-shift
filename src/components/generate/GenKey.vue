@@ -24,7 +24,7 @@
 <div class="col-sm-2">
 	<form>
 	<br>
-  <select name="cipher" class="custom-select">
+  <select name="cipher" class="custom-select" v-model="cipher">
     <option selected>Select cipher</option>
     <option value="aes">AES</option>
     <option value="des">DES</option>
@@ -37,7 +37,7 @@
 <div class="col-sm-2">
 	<form>
 	<br>
-  <select name="format" class="custom-select">
+  <select name="format" class="custom-select" v-model="format">
     <option selected>Select format</option>
     <option value="hex">hex</option>
     <option value="base64">base64</option>
@@ -50,7 +50,7 @@
 <div class="col-sm-2">
 	<form>
 	<br>
-  <select name="keysize" class="custom-select">
+  <select name="keysize" class="custom-select" v-model="keysize">
     <option selected>Select key size</option>
     <option value="128">512-bit</option>
     <option value="196">1024-bit</option>
@@ -60,7 +60,7 @@
 	</div>
 
 <div class="col-sm-3">
-    <button class="btn btn-success">
+    <button class="btn btn-success" @click="genKey">
         <a class="nav-link">Generate key</a>
     </button>
     </div>
