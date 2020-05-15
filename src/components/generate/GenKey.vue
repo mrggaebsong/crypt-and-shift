@@ -60,7 +60,7 @@
 	</div>
 
 <div class="col-sm-3">
-    <button class="btn btn-success" @click="genKey">
+    <button class="btn btn-success" v-on:click="genKey">
         <a class="nav-link">Generate key</a>
     </button>
     </div>

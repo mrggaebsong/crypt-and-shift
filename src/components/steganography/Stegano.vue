@@ -7,7 +7,7 @@
                     <div class="form-group">
                         <form>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" @change="processFile($event)">
+                                <input type="file" class="custom-file-input" id="customFile" v-on:change="handleFileUpload()">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                             </div>
                         </form>
@@ -28,7 +28,7 @@
                             <div class="form-group">
                                 <form>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile" @change="processFile($event)">
+                                        <input type="file" class="custom-file-input" id="customFile" v-on:change="handleFileUpload()">
                                         <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                 </form>
@@ -41,13 +41,13 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-1">
-                    <button class="btn btn-warning" @click="stegEncode">
+                    <button class="btn btn-warning" v-on:click="stegEncode()">
                         <a class="nav-link">Encode</a>
                     </button>
                 </div>
                 <div class="col-sm-5"></div>
                 <div class="col-sm-1">
-                    <button class="btn btn-warning" @click="stegDecode">
+                    <button class="btn btn-warning" v-on:click="stegDecode()">
                         <a class="nav-link">Decode</a>
                     </button>
                 </div>
@@ -56,10 +56,54 @@
 </template>
 
 <script>
-export default {
+    import axios from 'axios';
+
+    export default {
+        data: function() {
+        return {
+            file: '',
+            secretMessage: ''
+        };
+    },
     methods: {
-        processFile(event) {
-            this.someData = event.target.files[0]
+        handleFileUpload() {
+            this.file = this.$refs.file.files[0];
+        },
+        stegEncode() {
+            let formData = new FormData();
+            formData.append('file', this.file);
+
+            axios.post('/StegaEncrypt',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(function(){
+                console.log('Stegano Encrypt Success!');
+            })
+            .catch(function(){
+                console.log('Stegano Encrypt Failed');
+            });
+        },
+        stegDecode() {
+            let formData = new FormData();
+            formData.append('file', this.file);
+
+            axios.post('/StegaDecrypt',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(function(){
+                console.log('Stegano Decrypt Success!');
+            })
+            .catch(function(){
+                console.log('Stegano Decrypt Failed');
+            });
         }
     }
 }
