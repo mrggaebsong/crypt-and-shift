@@ -27,6 +27,15 @@
                                 </li>  
                             </ul>
                         </div>
+                        <div class="condition-render">
+                            <div class="secretMessage" v-if="inputTypeButton === 'Plain Text'">
+                                <textarea class="form-control" rows="1" id="comment" v-model="secretMessage"></textarea>
+                            </div>
+                            <div class="custom-file" v-else-if="inputTypeButton === 'File'">
+                                <input type="file" class="custom-file-input" id="customFile" v-on:change="handleFileUpload()">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -143,7 +152,7 @@
         background-color: #85b3cc;
         border: 1px solid gray;
         margin: 40px;
-        height: 800px;
+        height: 75%;
         padding: 50px;
     }
 
@@ -171,5 +180,18 @@
 
     li:hover {
         background-color: #0275d8;
+    }
+
+    .custom-file-input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .custom-file-label {
+        display: inline-block;
     }
 </style>
