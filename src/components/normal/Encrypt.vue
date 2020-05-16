@@ -29,7 +29,7 @@
                         </div>
                         <div class="condition-render">
                             <div class="secretMessage" v-if="inputTypeButton === 'Plain Text'">
-                                <textarea class="form-control" rows="1" id="comment" v-model="secretMessage"></textarea>
+                                <textarea class="form-control" rows="1" id="comment" v-model="secretMessage" v-on:change="secretMsg()"></textarea>
                             </div>
                             <div class="custom-file" v-else-if="inputTypeButton === 'File'">
                                 <input type="file" class="custom-file-input" id="customFile" v-on:change="handleFileUpload()">
@@ -98,7 +98,7 @@
                         </div>
                 </div>
             </form>
-            <button class="btn btn-warning">
+            <button class="btn btn-warning" v-on:click="encryptData()">
                 <a class="nav-link">Encryption</a>
             </button>
         </div>
@@ -106,6 +106,8 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
         data: function() {
             return {
@@ -138,6 +140,25 @@
             },
             selectOutputFormat: function(format) {
                 this.outputButton = format
+            },
+            encryptData() {
+                const submitData = {
+                    ciphers: this.encryptTypeButton,
+                    mode: this.encryptModeButton,
+                    secrete_key: this.keySizeButton,
+                    outputformat: this.outputButton
+                };
+
+                axios.post('/NormalEncrypt', submitData).then(function(){
+                    console.log(submitData);
+                    console.log('Success!');
+                }).catch(function(){
+                    console.log(submitData);
+                    console.log('Failed');
+                })
+            },
+            getEncryptedData() {
+                
             } 
         }
     }

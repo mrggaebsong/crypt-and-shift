@@ -70,11 +70,16 @@
             this.file = this.$refs.file.files[0];
         },
         stegEncode() {
-            let formData = new FormData();
-            formData.append('file', this.file);
+            let sampleFile = new FormData();
+            sampleFile.append('file', this.file);
+
+            const stegData = {
+                sampleFile: this.sampleFile,
+                secretMessage: this.secretMessage
+            }
 
             axios.post('/StegaEncrypt',
-                formData,
+                stegData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -87,12 +92,24 @@
                 console.log('Stegano Encrypt Failed');
             });
         },
+        getEncryptedFile() {
+            axios.get('/StegaEncrypt').then(response => {
+                this.file = response.file;
+            }).catch(e => {
+                this.error.push(e)
+            })
+        },
         stegDecode() {
-            let formData = new FormData();
-            formData.append('file', this.file);
+            let sampleFile = new FormData();
+            sampleFile.append('file', this.file);
+
+            const stegData = {
+                sampleFile: this.sampleFile,
+                secretMessage: this.secretMessage
+            }
 
             axios.post('/StegaDecrypt',
-                formData,
+                stegData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -104,6 +121,14 @@
             .catch(function(){
                 console.log('Stegano Decrypt Failed');
             });
+        },
+        getDecryptedFile() {
+            axios.get('/StegaDecrypt').then(response => {
+                this.file = response.file;
+                this.secretMessage = response.secretMessage;
+            }).catch(e => {
+                this.error.push(e)
+            })
         }
     }
 }

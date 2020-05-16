@@ -73,7 +73,7 @@
     <div class="form-group">
       <h5>Public key:</h5>
      <div class="form-group">
-  <textarea class="form-control" rows="6" id="comment"></textarea>
+  <textarea class="form-control" rows="6" id="comment" v-on:change="showKey()" v-model="randomKey.publicKey"></textarea>
 	</div>
     </div>
     </form>
@@ -84,7 +84,7 @@
     <div class="form-group">
       <h5>Private key:</h5>
     <div class="form-group">
-  <textarea class="form-control" rows="6" id="comment"></textarea>
+  <textarea class="form-control" rows="6" id="comment" v-on:change="showKey()" v-model="randomKey.privateKey"></textarea>
 	</div>
     </div>
     </form>	
@@ -92,6 +92,47 @@
     </div>
     </div>
 </template>
+
+<script>
+  import axios from 'axios';
+  export default {
+    data: function() {
+      return {
+        cipher: '',
+        format: '',
+        keysize: 0,
+        randomKey: {
+          publicKey: '',
+          privateKey: ''
+        }
+      }
+    },
+    methods: {
+      genKey() {
+        const genKeyData = {
+            ciphers: this.$cipher,
+            outputformat: this.$format,
+            key_size: this.$keysize
+        };
+
+        axios.post('/getRandomKey', genKeyData).then(function(){
+          console.log(genKeyData);
+          console.log('Success!');
+        }).catch(function(){
+          console.log(genKeyData);
+          console.log('Failed')
+        });
+      },
+      showKey() {
+        axios.get('/getRandomKey').then(response => {
+          this.randomKey = response.data
+        }).catch(e => {
+          this.error.push(e)
+        })
+      }
+    }
+}
+</script>
 
 <style>
     .col {
