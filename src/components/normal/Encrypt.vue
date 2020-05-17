@@ -98,9 +98,24 @@
                         </div>
                 </div>
             </form>
-            <button class="btn btn-warning" v-on:click="encryptData()">
+            <button class="btn btn-warning" v-on:click="encryptData()" data-toggle="showOutput" data-target="#outputPnl">
                 <a class="nav-link">Encryption</a>
+                 {{encryptButton}}
             </button>
+            <div class="showOutput">
+                <div class="custom-file" v-if="inputTypeButton === 'File'" method="get" > <!--action="file.doc"-->
+                    <h6>download encryption file:</h6>
+                    <button class="btn btn-primary" v-on:click="getEncryptedData()" type="submit">
+                        <a class="nav-link">Download</a>
+                    </button>
+                </div>
+                <div class="showSecretMessage" v-else-if="inputTypeButton === 'Plain Text'">
+                    <h6>encryption text:</h6>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" id="encryptText" ></textarea>
+                        </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

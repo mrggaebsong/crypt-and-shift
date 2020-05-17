@@ -98,9 +98,23 @@
                     </div>
                 </div>
             </form>
-            <button class="btn btn-warning" v-on:click="decryptData()">
+            <button class="btn btn-warning" v-on:click="decryptData()"  data-toggle="showOutput" data-target="#outputPnl">
                 <a class="nav-link">Decryption</a>
             </button>
+             <div class="showOutput">
+                <div class="custom-file" v-if="inputTypeButton === 'File' " method="get" > <!--action="file.doc"-->
+                    <h6>download Decryption file:</h6>
+                    <button class="btn btn-primary" v-on:click="getDecryptedData()" type="submit">
+                        <a class="nav-link">Download</a>
+                    </button>
+                </div>
+                <div class="showSecretMessage" v-else-if="inputTypeButton === 'Plain Text'">
+                    <h6>Decryption text:</h6>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" id="encryptText" ></textarea>
+                        </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
