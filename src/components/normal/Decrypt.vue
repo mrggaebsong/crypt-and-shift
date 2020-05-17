@@ -104,14 +104,14 @@
              <div class="showOutput">
                 <div class="custom-file" v-if="inputTypeButton === 'File' " method="get" > <!--action="file.doc"-->
                     <h6>download Decryption file:</h6>
-                    <button class="btn btn-primary" v-on:click="getDecryptedData()" type="submit">
+                    <button class="btn btn-primary" v-on:click="downloadData()" type="submit">
                         <a class="nav-link">Download</a>
                     </button>
                 </div>
                 <div class="showSecretMessage" v-else-if="inputTypeButton === 'Plain Text'">
                     <h6>Decryption text:</h6>
                         <div class="form-group">
-                            <textarea class="form-control" rows="3" id="encryptText" ></textarea>
+                            <textarea class="form-control" rows="3" id="encryptText" v-on:change="getDecryptedData()"></textarea>
                         </div>
                 </div>
             </div>
@@ -174,6 +174,22 @@
                     this.decryptData = response.ret
                 }).catch(e => {
                     this.error.push(e)
+                })
+            },
+            downloadData() {
+                axios({
+                    url: '/NormalEncrypt',
+                    method: 'GET',
+                    responseType: 'blob',
+                }).then((response) => {
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    var fileLink = document.createElement('a');
+
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', 'encrypted.bin');
+                    document.body.appendChild(fileLink);
+
+                    fileLink.click();
                 })
             } 
         }

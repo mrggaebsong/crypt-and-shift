@@ -18,6 +18,11 @@
                         </div>
                     </div>
                 </form>
+                <div class="encode">
+                    <button class="btn btn-warning" v-on:click="stegEncode()">
+                        <a class="nav-link">Encode</a>
+                    </button>
+                </div>
             </div>
 
             <div class="col">
@@ -34,22 +39,12 @@
                                 </form>
                             </div>
                         </div>
-                    </form>	
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-1">
-                    <button class="btn btn-warning" v-on:click="stegEncode()">
-                        <a class="nav-link">Encode</a>
-                    </button>
-                </div>
-                <div class="col-sm-5"></div>
-                <div class="col-sm-1">
-                    <button class="btn btn-warning" v-on:click="stegDecode()">
-                        <a class="nav-link">Decode</a>
-                    </button>
+                    </form>
+                    <div class="decode">
+                        <button class="btn btn-warning" v-on:click="stegDecode()">
+                            <a class="nav-link">Decode</a>
+                        </button>
+                    </div>	
                 </div>
             </div>
         </div>
@@ -93,10 +88,19 @@
             });
         },
         getEncryptedFile() {
-            axios.get('/StegaEncrypt').then(response => {
-                this.file = response.file;
-            }).catch(e => {
-                this.error.push(e)
+            axios({
+                url: '/StegaEncrypt',
+                method: 'GET',
+                responseType: 'blob',
+            }).then((response) => {
+                var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                var fileLink = document.createElement('a');
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'encrypted.bin');
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
             })
         },
         stegDecode() {
@@ -124,7 +128,6 @@
         },
         getDecryptedFile() {
             axios.get('/StegaDecrypt').then(response => {
-                this.file = response.file;
                 this.secretMessage = response.secretMessage;
             }).catch(e => {
                 this.error.push(e)
@@ -135,11 +138,11 @@
 </script>
 
 <style>
-    .col-ste {
+    .col {
         background-color: #85b3cc;
         border: 1px solid gray;
         margin: 50px;
-        height: 370px;
+        height: 50%;
         padding: 30px;
     }
 
@@ -162,5 +165,9 @@
 
     a:hover {
         color: white;
+    }
+
+    .decode {
+        margin-top: 105px;
     }
 </style>
