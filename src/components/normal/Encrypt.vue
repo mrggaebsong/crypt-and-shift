@@ -158,7 +158,11 @@
                 })
             },
             getEncryptedData() {
-                
+                axios.get('/NormalEncrypt').then(response => {
+                    this.encryptData = response.ret
+                }).catch(e => {
+                    this.error.push(e)
+                })
             } 
         }
     }

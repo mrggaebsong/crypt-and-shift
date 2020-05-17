@@ -156,7 +156,11 @@
                 })
             },
             getDecryptedData() {
-                
+                axios.get('/NormalDecrypt').then(response => {
+                    this.decryptData = response.ret
+                }).catch(e => {
+                    this.error.push(e)
+                })
             } 
         }
     }

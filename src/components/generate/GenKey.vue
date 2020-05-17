@@ -125,7 +125,7 @@
       },
       showKey() {
         axios.get('/getRandomKey').then(response => {
-          this.randomKey = response.data
+          this.randomKey = response.ret
         }).catch(e => {
           this.error.push(e)
         })
