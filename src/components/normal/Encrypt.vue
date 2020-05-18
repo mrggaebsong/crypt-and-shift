@@ -183,7 +183,7 @@
             },
             getEncryptedData() {
                 axios.get('http://localhost:3000/NormalEncrypt').then(response => {
-                    this.encryptData = response.ret
+                    this.encryptData = response.data
                 }).catch(e => {
                     this.error.push(e)
                 })

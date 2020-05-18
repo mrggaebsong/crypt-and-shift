@@ -60,7 +60,7 @@
 	</div>
 
 <div class="col-sm-3">
-    <button class="btn btn-success" v-on:click="genKey">
+    <button class="btn btn-success" @click="genKey">
         <a class="nav-link">Generate key</a>
     </button>
     </div>
@@ -73,7 +73,7 @@
     <div class="form-group">
       <h5>Public key:</h5>
      <div class="form-group">
-  <textarea class="form-control" rows="6" id="comment" v-on:change="showKey()" v-model="randomKey.publicKey"></textarea>
+  <textarea class="form-control" rows="6" id="comment" v-model="randomKey.key"></textarea>
 	</div>
     </div>
     </form>
@@ -84,7 +84,7 @@
     <div class="form-group">
       <h5>Private key:</h5>
     <div class="form-group">
-  <textarea class="form-control" rows="6" id="comment" v-on:change="showKey()" v-model="randomKey.privateKey"></textarea>
+  <textarea class="form-control" rows="6" id="comment" v-model="randomKey.iv"></textarea>
 	</div>
     </div>
     </form>	
@@ -96,55 +96,46 @@
 <script>
   import axios from 'axios';
   export default {
+    mounted() {
+      console.log('Generating Random Key');
+    },
     data: function() {
       return {
         ciphers: '',
         format: '',
         size: '',
         randomKey: {
-          publicKey: '',
-          privateKey: ''
+          key: '',
+          iv: ''
         }
       }
     },
     methods: {
-      genKey() {
-        const genKeyData = {
-            ciphers: this.ciphers,
-            outputformat: this.format,
-            key_size: this.size
-        };
+      genKey(e) {
+        e.preventDefault();
+        const data = new FormData();
+        data.append('ciphers', this.ciphers);
+        data.append('format', this.format);
+        data.append('size', this.size);
 
-        axios.post('http://localhost:3000/getRandomKey', {
-            ciphers: this.ciphers,
-            outputformat: this.format,
-            key_size: this.size
-          }, 
-          {
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/getRandomKey',
+            data,
             headers: {
-              "Accept": "application/x-www-form-urlencoded",
-              "Content-Type": "application/x-www-form-urlencoded",
+              "Accept": "application/form-data",
+              "Content-Type": "application/form-data",
               "Access-Control-Allow-Origin": "http://localhost:3000",
               "Access-Control-Allow-Methods": "POST",
               "Access-Control-Allow-Credentials": true,
               "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
             }
-          }
-          )
-        .then(function(){
-          console.log(genKeyData);
-          console.log('Success!');
-        }).catch(function(){
-          console.log(genKeyData);
-          console.log('Failed')
-        });
-      },
-      showKey() {
-        axios.get('http://localhost:3000/getRandomKey').then(response => {
-          this.randomKey = response.data
-        }).catch(e => {
-          this.error.push(e)
-        })
+          }).then(res => {
+            this.randomKey = res.data;
+            console.log(res.data);
+          }).catch(function(){
+            console.log('Failed', data)
+          });
       }
     }
 }
