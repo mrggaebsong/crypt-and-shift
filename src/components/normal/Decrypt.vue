@@ -161,7 +161,17 @@
                     outputformat: this.outputButton
                 };
 
-                axios.post('http://localhost:3000/NormalDecrypt', submitData).then(function(){
+                axios.post('http://localhost:3000/NormalDecrypt', submitData,
+                {
+                    headers: {
+                        "Accept": "application/x-www-form-urlencoded",
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Access-Control-Allow-Origin": "http://localhost:3000",
+                        "Access-Control-Allow-Methods": "POST",
+                        "Access-Control-Allow-Credentials": true,
+                        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+                    }
+                }).then(function(){
                     console.log(submitData);
                     console.log('Success!');
                 }).catch(function(){
@@ -171,7 +181,7 @@
             },
             getDecryptedData() {
                 axios.get('http://localhost:3000/NormalDecrypt').then(response => {
-                    this.decryptData = response.ret
+                    this.decryptData = response.data
                 }).catch(e => {
                     this.error.push(e)
                 })

@@ -100,7 +100,7 @@
       return {
         ciphers: '',
         format: '',
-        size: 0,
+        size: '',
         randomKey: {
           publicKey: '',
           privateKey: ''
@@ -115,16 +115,23 @@
             key_size: this.size
         };
 
-        axios.post('http://localhost:3000/getRandomKey', genKeyData, {
-          headers: {
-            "Accept": "application/x-www-form-urlencoded",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Allow-Origin": "http://localhost:3000",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Credentials": true,
-            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-        }
-        }).then(function(){
+        axios.post('http://localhost:3000/getRandomKey', {
+            ciphers: this.ciphers,
+            outputformat: this.format,
+            key_size: this.size
+          }, 
+          {
+            headers: {
+              "Accept": "application/x-www-form-urlencoded",
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Access-Control-Allow-Origin": "http://localhost:3000",
+              "Access-Control-Allow-Methods": "POST",
+              "Access-Control-Allow-Credentials": true,
+              "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+            }
+          }
+          )
+        .then(function(){
           console.log(genKeyData);
           console.log('Success!');
         }).catch(function(){
@@ -132,13 +139,13 @@
           console.log('Failed')
         });
       },
-      // showKey() {
-      //   axios.get('http://localhost:3000/getRandomKey').then(response => {
-      //     this.randomKey = response.ret
-      //   }).catch(e => {
-      //     this.error.push(e)
-      //   })
-      // }
+      showKey() {
+        axios.get('http://localhost:3000/getRandomKey').then(response => {
+          this.randomKey = response.data
+        }).catch(e => {
+          this.error.push(e)
+        })
+      }
     }
 }
 </script>

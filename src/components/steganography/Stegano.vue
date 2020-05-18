@@ -82,7 +82,12 @@
                 stegData,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        "Accept": "application/x-www-form-urlencoded",
+                        "Content-Type": "multipart/form-data",
+                        "Access-Control-Allow-Origin": "http://localhost:3000",
+                        "Access-Control-Allow-Methods": "POST",
+                        "Access-Control-Allow-Credentials": true,
+                        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
                     }
                 }
             ).then(function(){
@@ -121,7 +126,12 @@
                 stegData,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        "Accept": "application/x-www-form-urlencoded",
+                        "Content-Type": "multipart/form-data",
+                        "Access-Control-Allow-Origin": "http://localhost:3000",
+                        "Access-Control-Allow-Methods": "POST",
+                        "Access-Control-Allow-Credentials": true,
+                        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
                     }
                 }
             ).then(function(){
@@ -133,7 +143,7 @@
         },
         getDecryptedFile() {
             axios.get('http://localhost:3000/StegaDecrypt').then(response => {
-                this.secretMessage = response.secretMessage;
+                this.secretMessage = response.data;
             }).catch(e => {
                 this.error.push(e)
             })
