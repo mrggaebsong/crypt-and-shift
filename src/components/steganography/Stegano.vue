@@ -2,7 +2,7 @@
 	<div class="container-stegano">
         <div class="row">
             <div class="col">
-                <h4>Encode</h4>
+                <h4>Encrypt</h4>
                 <form>
                     <div class="form-group">
                         <form>
@@ -19,14 +19,13 @@
                     </div>
                 </form>
                 <div class="encode">
-                    <button class="btn btn-warning" v-on:click="stegEncode()">
-                        <a class="nav-link">Encode</a>
-                    </button>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                    <button class="btn btn-warning" v-on:click="stegEncode()"><i class="fa fa-download"></i> Encrypt & Download</button>
                 </div>
             </div>
 
             <div class="col">
-                <h4>Decode</h4>
+                <h4>Decrypt</h4>
                     <form>
                         <div class="form-group">
                             <br>
@@ -35,20 +34,26 @@
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="customFile" v-on:change="handleFileUpload()">
                                         <label class="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
+                                   <br><br>
+                        
+                        <button class="btn btn-warning" v-on:click="stegDecode()">
+                            <a class="nav-link">Decrypt</a>
+                        </button>
+                    </div>
                                 </form>
                             </div>
                         </div>
-                    </form>
-                    <div class="decode">
-                        <button class="btn btn-warning" v-on:click="stegDecode()">
-                            <a class="nav-link">Decode</a>
-                        </button>
-                    </div>	
+                    </form>	
+                    <br><br>
+                    <h6>Decrypted message:</h6>
+                    <div class="form-group">
+                            <textarea class="form-control" rows="2" id="comment" v-model="decryptMessage"></textarea>
+                        </div>
                 </div>
             </div>
         </div>
 </template>
+
 
 <script>
     import axios from 'axios';
