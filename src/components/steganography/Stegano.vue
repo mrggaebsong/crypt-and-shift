@@ -89,7 +89,7 @@
         },
         getEncryptedFile() {
             axios({
-                url: '/StegaEncrypt',
+                url: 'http://localhost:3000/StegaEncrypt',
                 method: 'GET',
                 responseType: 'blob',
             }).then((response) => {
@@ -112,7 +112,7 @@
                 secretMessage: this.secretMessage
             }
 
-            axios.post('/StegaDecrypt',
+            axios.post('http://localhost:3000/StegaDecrypt',
                 stegData,
                 {
                     headers: {
@@ -127,7 +127,7 @@
             });
         },
         getDecryptedFile() {
-            axios.get('/StegaDecrypt').then(response => {
+            axios.get('http://localhost:3000/StegaDecrypt').then(response => {
                 this.secretMessage = response.secretMessage;
             }).catch(e => {
                 this.error.push(e)

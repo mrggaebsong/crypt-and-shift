@@ -24,7 +24,7 @@
 <div class="col-sm-2">
 	<form>
 	<br>
-  <select name="cipher" class="custom-select" v-model="cipher">
+  <select name="cipher" class="custom-select" v-model="ciphers">
     <option selected>Select cipher</option>
     <option value="aes">AES</option>
     <option value="des">DES</option>
@@ -50,7 +50,7 @@
 <div class="col-sm-2">
 	<form>
 	<br>
-  <select name="keysize" class="custom-select" v-model="keysize">
+  <select name="keysize" class="custom-select" v-model="size">
     <option selected>Select key size</option>
     <option value="128">512-bit</option>
     <option value="196">1024-bit</option>
@@ -98,9 +98,9 @@
   export default {
     data: function() {
       return {
-        cipher: '',
+        ciphers: '',
         format: '',
-        keysize: 0,
+        size: 0,
         randomKey: {
           publicKey: '',
           privateKey: ''
@@ -110,12 +110,21 @@
     methods: {
       genKey() {
         const genKeyData = {
-            ciphers: this.$cipher,
-            outputformat: this.$format,
-            key_size: this.$keysize
+            ciphers: this.ciphers,
+            outputformat: this.format,
+            key_size: this.size
         };
 
-        axios.post('/getRandomKey', genKeyData).then(function(){
+        axios.post('http://localhost:3000/getRandomKey', genKeyData, {
+          headers: {
+            "Accept": "application/x-www-form-urlencoded",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+        }
+        }).then(function(){
           console.log(genKeyData);
           console.log('Success!');
         }).catch(function(){
@@ -123,13 +132,13 @@
           console.log('Failed')
         });
       },
-      showKey() {
-        axios.get('/getRandomKey').then(response => {
-          this.randomKey = response.ret
-        }).catch(e => {
-          this.error.push(e)
-        })
-      }
+      // showKey() {
+      //   axios.get('http://localhost:3000/getRandomKey').then(response => {
+      //     this.randomKey = response.ret
+      //   }).catch(e => {
+      //     this.error.push(e)
+      //   })
+      // }
     }
 }
 </script>

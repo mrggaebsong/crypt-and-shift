@@ -164,7 +164,7 @@
                     outputformat: this.outputButton
                 };
 
-                axios.post('/NormalEncrypt', submitData).then(function(){
+                axios.post('http://localhost:3000/NormalEncrypt', submitData).then(function(){
                     console.log(submitData);
                     console.log('Success!');
                 }).catch(function(){
@@ -173,7 +173,7 @@
                 })
             },
             getEncryptedData() {
-                axios.get('/NormalEncrypt').then(response => {
+                axios.get('http://localhost:3000/NormalEncrypt').then(response => {
                     this.encryptData = response.ret
                 }).catch(e => {
                     this.error.push(e)
@@ -181,7 +181,7 @@
             },
             downloadData() {
                 axios({
-                    url: '/NormalEncrypt',
+                    url: 'http://localhost:3000/NormalEncrypt',
                     method: 'GET',
                     responseType: 'blob',
                 }).then((response) => {

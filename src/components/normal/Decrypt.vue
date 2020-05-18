@@ -161,7 +161,7 @@
                     outputformat: this.outputButton
                 };
 
-                axios.post('/NormalDecrypt', submitData).then(function(){
+                axios.post('http://localhost:3000/NormalDecrypt', submitData).then(function(){
                     console.log(submitData);
                     console.log('Success!');
                 }).catch(function(){
@@ -170,7 +170,7 @@
                 })
             },
             getDecryptedData() {
-                axios.get('/NormalDecrypt').then(response => {
+                axios.get('http://localhost:3000/NormalDecrypt').then(response => {
                     this.decryptData = response.ret
                 }).catch(e => {
                     this.error.push(e)
