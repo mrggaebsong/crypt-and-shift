@@ -52,9 +52,9 @@
 	<br>
   <select name="keysize" class="custom-select" v-model="keysize">
     <option selected>Select key size</option>
-    <option value="128">512-bit</option>
-    <option value="196">1024-bit</option>
-    <option value="256">2048-bit</option>
+    <option value="128">128-bit</option>
+    <option value="196">196-bit</option>
+    <option value="256">256-bit</option>
   </select>
 	</form>
 	</div>
