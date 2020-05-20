@@ -22,8 +22,8 @@
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                     <button class="btn btn-warning" @click="stegEncode"> Encrypt </button>
                 </div>
-                <div class="image-preview">
-                    <img class="preview" :src="myImage" alt="steganoEncrypt">
+                <div class="image-preview" v-if="isClicked">
+                    <img class="preview" :src="link" alt="steganoEncrypt" />
                 </div>
             </div>
 
@@ -50,50 +50,44 @@
                     <br><br>
                     <h6>Decrypted message:</h6>
                     <div class="form-group">
-                            <textarea class="form-control" rows="2" id="comment" v-model="decryptMessage"></textarea>
+                            <textarea class="form-control" rows="2" id="comment" v-model="decryptMessage.text"></textarea>
                         </div>
                 </div>
             </div>
+            <!-- <p>{{link}}</p> -->
         </div>
 </template>
 
 
 <script>
     import axios from 'axios';
-    
-    const imageResource = "";
 
     export default {
+        mounted() {
+            console.log('Steganography');
+        },
         data: function() {
         return {
             image: "",
             text: '',
-            decryptMessage: '',
-            encryptFile: ""
+            decryptMessage: {
+                text: ''
+            },
+            link: "",
+            baseImage: "'data:image/png;base64,",
+            isClicked: false
         };
-    },
-    computed: {
-        myImage() {
-            // console.log("'data:image/png;base64, ${this.image}'")
-            return 'data:image/png;base64, ${this.image}'
-        }
-    },
-    created() {
-        this.loadImage();
     },
     methods: {
         onFileSelected(event) {
             // console.log(event);
             this.image = event.target.files[0];
         },
-        loadImage() {
-            this.image = imageResource;
-            console.log(this.image);
-        },
-        stegEncode() {
-            // e.preventDefault();
+        stegEncode(e) {
+            e.preventDefault();
             let data = new FormData();
             data.append('sampleFile', this.image, this.image.name);
+            // console.log(this.image.name);
             data.append('text', this.text);
 
             axios({
@@ -112,20 +106,17 @@
                 // let data = {"data":res.data};
                 this.imageResource = res.data;
                 // console.log('Success!', data);
-                // console.log(res.data);
-                console.log(this.imageResource);
-                
-                // let reader = new FileReader();
-                // reader.readAsDataURL(res.data);
-                // reader.onload = () => {
-                //     this.encryptImage = reader.result;
-                // }
+                // console.log(this.imageResource);
+                this.link = this.baseImage + this.imageResource + "'";
+                console.log(this.link);
+                this.isClicked = true;
             }).catch(function(){
                 console.log('Failed', data);
             });
+
         },
-        stegDecode() {
-            // e.preventDefault();
+        stegDecode(e) {
+            e.preventDefault();
             let data = new FormData();
             data.append('sampleFile', this.image, this.image.name);
 
