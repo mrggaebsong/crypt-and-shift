@@ -132,9 +132,10 @@
             }
           }).then(res => {
             this.randomKey = res.data;
+            console.log('Success!', data);
             console.log(res.data);
           }).catch(function(){
-            console.log('Failed', data)
+            console.log('Failed', data);
           });
       }
     }
