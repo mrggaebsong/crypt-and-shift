@@ -1,4 +1,5 @@
 <template>
+
     <div>
         <a href="/" class="nav-link">
             <div class="logo">
@@ -6,6 +7,7 @@
             </div>
         </a>
     </div>
+    
 </template>
 
 <style>

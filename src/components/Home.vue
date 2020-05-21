@@ -1,18 +1,25 @@
 <template>
+
     <div class="container">
-        <strong>This is a website that help you encrypt and decrypt anything easily.</strong>
+        
+        <div class="jumbotron text-center" style="margin-bottom:0">
+            <h1>This is a website that help you encrypt and decrypt anything easily.</h1>
+        </div>
+
         <div class="row">
             <div class="col">
                 <div class="normal">
                     <p>For who want to enjoy with encrypting and decrypting anything.</p>
                     <p>Please select the type you want.</p>
 
-                    <button class="btn btn-info">
-                        <a href="/crypto" class="nav-link">Normal Crypto</a>
-                    </button>
-                    <button class="btn btn-danger">
-                        <a href="/stegano" class="nav-link">Steganography</a>
-                    </button>
+                    <div class="btn-group">
+                        <button class="btn btn-info">
+                            <a href="/crypto" class="nav-link">Normal Crypto</a>
+                        </button>
+                        <button class="btn btn-danger">
+                            <a href="/stegano" class="nav-link">Steganography</a>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="col">
@@ -32,9 +39,9 @@
 <script>
 </script>
 
-<style>
+<style scoped>
     .col {
-        background-color: #85b3cc;
+        background-color: #85b3cc  ;
         border: 1px solid gray;
         margin: 40px;
         height: 250px;
@@ -48,6 +55,7 @@
     button {
         display: block;
         margin: 20px;
+        border-radius: 4px;
     }
 
     .genkey button {

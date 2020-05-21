@@ -106,16 +106,10 @@
                 </div>
             </form>
             <button class="btn btn-warning" @click="decryptData"  data-toggle="showOutput" data-target="#outputPnl">
-                <a class="nav-link">Decryption</a>
+                <a class="nav-link">Decrypt <span v-if="inputTypeButton === 'File'"> & Download</span></a>
             </button>
              <div class="showOutput" v-if="isClicked">
-                <div class="custom-file" v-if="inputTypeButton === 'File' " method="get" > <!--action="file.doc"-->
-                    <h6>download Decryption file:</h6>
-                    <button class="btn btn-primary" v-on:click="downloadData()" type="submit">
-                        <a class="nav-link">Download</a>
-                    </button>
-                </div>
-                <div class="showSecretMessage" v-else-if="inputTypeButton === 'Plain Text'">
+                <div class="showSecretMessage" v-if="inputTypeButton === 'Plain Text'">
                     <h6>Decryption text:</h6>
                         <div class="form-group">
                             <textarea class="form-control" rows="3" id="encryptText" v-model="decryptMessage.data"></textarea>
@@ -130,6 +124,9 @@
     import axios from 'axios';
 
     export default {
+        mounted() {
+            console.log('Normal Decrypted');
+        },
         data: function() {
             return {
                 ciphers: "Choose",
@@ -186,9 +183,12 @@
                 data.append('text', this.encryptMessage);
                 data.append('sampleFile', this.sampleFile);
 
-                for (var value of data.values()) {
-                    console.log(value); 
-                }
+                console.log(this.encryptMessage);
+                console.log(this.sampleFile);
+
+                // for (var value of data.values()) {
+                //     console.log(value); 
+                // }
 
                 axios({
                     method: 'post',
@@ -208,30 +208,23 @@
                         console.log(this.decryptMessage);
                     } else {
                         this.decryptFile == res.data;
-                        console.log(this.decryptFile);
+                        console.log(res.data);
+
+                        var fileURL = window.URL.createObjectURL(new Blob([res.data]));
+                        var fileLink = document.createElement('a');
+
+                        fileLink.href = fileURL;
+                        fileLink.setAttribute('download', 'decrypted_' + this.sampleFile.name);
+                        document.body.appendChild(fileLink);
+
+                        fileLink.click();
                     }
 
                     this.isClicked = true;
                 }).catch(function(){
                     console.log('Failed', data);
                 })
-            },
-            downloadData() {
-                axios({
-                    url: '/NormalEncrypt',
-                    method: 'GET',
-                    responseType: 'blob',
-                }).then((response) => {
-                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-                    var fileLink = document.createElement('a');
-
-                    fileLink.href = fileURL;
-                    fileLink.setAttribute('download', 'encrypted.bin');
-                    document.body.appendChild(fileLink);
-
-                    fileLink.click();
-                })
-            } 
+            }
         }
     }
 </script>
