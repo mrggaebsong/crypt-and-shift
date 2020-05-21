@@ -23,7 +23,7 @@
                     <button class="btn btn-warning" @click="stegEncode"> Encrypt </button>
                 </div>
                 <div class="image-preview" v-if="isClicked">
-                    <img class="preview" :src="link" alt="steganoEncrypt" />
+                    <img class="preview" :src="myImage" alt="steganoEncrypt" />
                 </div>
             </div>
 
@@ -54,7 +54,6 @@
                         </div>
                 </div>
             </div>
-            <!-- <p>{{link}}</p> -->
         </div>
 </template>
 
@@ -74,15 +73,21 @@
                 text: ''
             },
             link: "",
-            baseImage: "'data:image/png;base64,",
+            baseImage: "data:image/png;base64,",
             isClicked: false
         };
+    },
+    computed: {
+        myImage () {
+            return `data:image/png;base64, ${this.imageResource}`
+        }
     },
     methods: {
         onFileSelected(event) {
             // console.log(event);
             this.image = event.target.files[0];
         },
+        
         stegEncode(e) {
             e.preventDefault();
             let data = new FormData();
@@ -107,8 +112,8 @@
                 this.imageResource = res.data;
                 // console.log('Success!', data);
                 // console.log(this.imageResource);
-                this.link = this.baseImage + this.imageResource + "'";
-                console.log(this.link);
+                this.link = "'" + this.baseImage + this.imageResource + "'";
+                // console.log(this.link);
                 this.isClicked = true;
             }).catch(function(){
                 console.log('Failed', data);
