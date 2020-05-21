@@ -1,14 +1,15 @@
 <template>
+
     <div class="row">
         <div class="col"  align="left">
             <h4>Decryption</h4>
             <div class="btn-group">
                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" 
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{encryptTypeButton}}
+                            {{ciphers}}
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item" v-for="type in encryptType" v-bind:key="type" v-on:click="selectEncryptType(type)" @click.prevent="activeNews(1)">
+                    <li class="dropdown-item" v-for="type in encryptType" v-bind:key="type" v-on:click="selectEncryptType(type)">
                         <a href="#">{{type}}</a>
                     </li>
                 </ul>
@@ -22,17 +23,17 @@
                                                 {{inputTypeButton}}
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" v-for="input in inputType" v-bind:key="input" v-on:click="selectInputType(input)" @click.prevent="activeNews(1)">
+                                <li class="dropdown-item" v-for="input in inputType" v-bind:key="input" v-on:click="selectInputType(input)">
                                     <a href="#">{{input}}</a>
                                 </li>  
                             </ul>
                         </div>
                         <div class="condition-render">
                             <div class="secretMessage" v-if="inputTypeButton === 'Plain Text'">
-                                <textarea class="form-control" rows="1" id="comment" v-model="secretMessage" v-on:change="secretMsg()"></textarea>
+                                <textarea class="form-control" rows="1" id="comment" v-model="encryptMessage"></textarea>
                             </div>
                             <div class="custom-file" v-else-if="inputTypeButton === 'File'">
-                                <input type="file" class="custom-file-input" id="customFile" v-on:change="handleFileUpload()">
+                                <input type="file" class="custom-file-input" id="customFile" @change="handleFileUpload">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                             </div>
                         </div>
@@ -45,10 +46,10 @@
                     <div class="form-group">
                         <div class="btn-group">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{encryptModeButton}}
+                                            {{mode}}
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" v-for="mode in encryptMode" v-bind:key="mode" v-on:click="selectEncryptMode(mode)" @click.prevent="activeNews(1)">
+                                <li class="dropdown-item" v-for="mode in encryptMode" v-bind:key="mode" v-on:click="selectEncryptMode(mode)">
                                     <a href="#">{{mode}}</a>
                                 </li>
                             </ul>
@@ -62,10 +63,10 @@
                     <div class="form-group">
                         <div class="btn-group">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{keySizeButton}}
+                                            {{size}}
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" v-for="size in keySize" v-bind:key="size" v-on:click="selectKeySize(size)" @click.prevent="activeNews(1)">
+                                <li class="dropdown-item" v-for="size in keySize" v-bind:key="size" v-on:click="selectKeySize(size)">
                                     <a href="#">{{size}}</a>
                                 </li>
                             </ul>
@@ -76,8 +77,14 @@
             <form>
                 <div class="form-group">
                     <h6>Enter Secret key:</h6>
+                    <p>You can get this from <a href="/genkey">'Generate Key'</a> Page</p>
                     <div class="form-group">
-                            <textarea class="form-control" rows="1" id="comment" v-model="secretKey"></textarea>
+                        <textarea class="form-control" rows="1" id="comment" v-model="secrete_key"></textarea>
+                    </div>
+                    <h6>Enter Private Key (Initial Vector):</h6>
+                    <p>You can get this from <a href="/genkey">'Generate Key'</a> Page</p>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="1" id="comment" v-model="iv"></textarea>
                     </div>
                 </div>
             </form>
@@ -87,10 +94,10 @@
                     <div class="form-group">
                         <div class="btn-group">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{outputButton}}
+                                            {{format}}
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" v-for="format in outputFormat" v-bind:key="format" v-on:click="selectOutputFormat(format)" @click.prevent="activeNews(1)">
+                                <li class="dropdown-item" v-for="format in outputFormat" v-bind:key="format" v-on:click="selectOutputFormat(format)">
                                     <a href="#">{{format}}</a>
                                 </li>
                             </ul>
@@ -98,10 +105,10 @@
                     </div>
                 </div>
             </form>
-            <button class="btn btn-warning" v-on:click="decryptData()"  data-toggle="showOutput" data-target="#outputPnl">
+            <button class="btn btn-warning" @click="decryptData"  data-toggle="showOutput" data-target="#outputPnl">
                 <a class="nav-link">Decryption</a>
             </button>
-             <div class="showOutput">
+             <div class="showOutput" v-if="isClicked">
                 <div class="custom-file" v-if="inputTypeButton === 'File' " method="get" > <!--action="file.doc"-->
                     <h6>download Decryption file:</h6>
                     <button class="btn btn-primary" v-on:click="downloadData()" type="submit">
@@ -111,7 +118,7 @@
                 <div class="showSecretMessage" v-else-if="inputTypeButton === 'Plain Text'">
                     <h6>Decryption text:</h6>
                         <div class="form-group">
-                            <textarea class="form-control" rows="3" id="encryptText" v-on:change="getDecryptedData()"></textarea>
+                            <textarea class="form-control" rows="3" id="encryptText" v-model="decryptMessage.data"></textarea>
                         </div>
                 </div>
             </div>
@@ -125,65 +132,88 @@
     export default {
         data: function() {
             return {
-                encryptTypeButton: "Choose",
+                ciphers: "Choose",
                 inputTypeButton: "Choose",
-                encryptModeButton: "Choose",
-                keySizeButton: "Choose",
-                outputButton: "Choose",
+                mode: "Choose",
+                size: "Choose",
+                format: "Choose",
                 encryptType: ["AES", "DES"],
                 inputType: ["Plain Text", "File"],
-                encryptMode: ["CBC", "ECB"],
+                encryptMode: ["CBC", "CCM"],
                 keySize: [128, 192, 256],
-                outputFormat: ["BIN", "HEX", "DEC"]
+                outputFormat: ["Str", "Hex", "Base64"],
+                encryptMessage: '',
+                sampleFile: '',
+                secrete_key: '',
+                iv: '',
+                decryptMessage: {
+                    data: ''
+                },
+                decryptFile: {
+                    data: ''
+                },
+                isClicked: false
             };
         },
         methods: {
+            handleFileUpload(event) {
+                this.sampleFile = event.target.files[0];
+            },
             selectEncryptType: function(type) {
-                this.encryptTypeButton = type;
+                this.ciphers = type;
             },
             selectInputType: function(input) {
                 this.inputTypeButton = input
             },
             selectEncryptMode: function(mode) {
-                this.encryptModeButton = mode
+                this.mode = mode
             },
             selectKeySize: function(size) {
-                this.keySizeButton = size
+                this.size = size
             },
             selectOutputFormat: function(format) {
-                this.outputButton = format
+                this.format = format
             },
-            decryptData() {
-                const submitData = {
-                    ciphers: this.encryptTypeButton,
-                    mode: this.encryptModeButton,
-                    secrete_key: this.keySizeButton,
-                    outputformat: this.outputButton
-                };
+            decryptData(e) {
+                e.preventDefault();
+                let data = new FormData();
+                data.append('ciphers', this.ciphers.toLowerCase());
+                data.append('mode', this.mode.toLowerCase());
+                data.append('secrete_key', this.secrete_key);
+                data.append('iv', this.iv);
+                data.append('format', this.format.toLowerCase());
+                data.append('size', this.size);
+                data.append('text', this.encryptMessage);
+                data.append('sampleFile', this.sampleFile);
 
-                axios.post('http://localhost:3000/NormalDecrypt', submitData,
-                {
+                for (var value of data.values()) {
+                    console.log(value); 
+                }
+
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3000/NormalDecrypt',
+                    data,
                     headers: {
-                        "Accept": "application/x-www-form-urlencoded",
-                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Accept": "application/form-data",
+                        "Content-Type": "application/form-data",
                         "Access-Control-Allow-Origin": "http://localhost:3000",
                         "Access-Control-Allow-Methods": "POST",
                         "Access-Control-Allow-Credentials": true,
                         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
                     }
-                }).then(function(){
-                    console.log(submitData);
-                    console.log('Success!');
+                }).then(res => {
+                    if(this.inputTypeButton === 'Plain Text') {
+                        this.decryptMessage = res.data;
+                        console.log(this.decryptMessage);
+                    } else {
+                        this.decryptFile == res.data;
+                        console.log(this.decryptFile);
+                    }
+
+                    this.isClicked = true;
                 }).catch(function(){
-                    console.log(submitData);
-                    console.log('Failed');
-                })
-            },
-            getDecryptedData() {
-                axios.get('http://localhost:3000/NormalDecrypt').then(response => {
-                    this.decryptData = response.data
-                }).catch(e => {
-                    this.error.push(e)
+                    console.log('Failed', data);
                 })
             },
             downloadData() {
@@ -209,7 +239,7 @@
 <style scoped>
     .row {
         width: 150%;
-        margin-left: 200px;
+        margin-left: 100px;
         margin-right: -175px;
     }
 
