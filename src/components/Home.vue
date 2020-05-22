@@ -27,9 +27,11 @@
                     <p>For who want only the key.</p>
                     <p>We can generate these whatever you want.</p>
 
-                    <button class="btn btn-secondary">
-                        <a href="/genkey" class="nav-link">Generate Keys Only</a>
-                    </button>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary">
+                            <a href="/genkey" class="nav-link">Generate Keys Only</a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
